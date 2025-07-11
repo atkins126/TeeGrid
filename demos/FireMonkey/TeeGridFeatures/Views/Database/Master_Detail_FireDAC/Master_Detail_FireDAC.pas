@@ -58,6 +58,8 @@ uses
 
 procedure TMasterDetail.FormCreate(Sender: TObject);
 begin
+  SampleData.OpenTables;
+
   TeeGrid1.DataSource:=SampleData.CustomersTable;
 
   // Initialize "Expander"
@@ -82,7 +84,9 @@ begin
     Expander.AlwaysExpand:=True;
 
     // Set to first Column
-    TeeGrid1.Columns[0].Render:=Expander;
+
+    if TeeGrid1.Columns.Count>0 then
+       TeeGrid1.Columns[0].Render:=Expander;
   end
   else
   begin

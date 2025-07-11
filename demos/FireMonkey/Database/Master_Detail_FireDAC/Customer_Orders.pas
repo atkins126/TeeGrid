@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Stan.StorageBin, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.StorageBin, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  FireDAC.Phys.SQLiteWrapper.Stat;
 
 type
   TSampleData = class(TDataModule)
@@ -16,6 +17,7 @@ type
     CustomersTable: TFDQuery;
     OrdersTable: TFDQuery;
     FDStanStorageBinLink1: TFDStanStorageBinLink;
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
 
@@ -34,6 +36,11 @@ implementation
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TSampleData.DataModuleCreate(Sender: TObject);
+begin
+  Sqlite_demoConnection.Open;
+end;
 
 function TSampleData.OrdersOfCustomer(const ARecNo:Integer):TDataSet;
 

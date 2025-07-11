@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite,
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Stan.StorageBin, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.StorageBin, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  FireDAC.Phys.SQLiteWrapper.Stat;
 
 type
   TSampleData = class(TDataModule)
@@ -23,6 +24,7 @@ type
   public
     { Public declarations }
 
+    procedure OpenTables;
     function OrdersOfCustomer(const ARecNo:Integer):TDataSet;
   end;
 
@@ -34,6 +36,36 @@ implementation
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
 {$R *.dfm}
+
+uses
+  IOUtils;
+
+function FolderWithSampleData:String;
+begin
+  result:='fddemo.sdb';
+
+  repeat
+    if TFile.Exists(result) then
+       exit
+    else
+       result:=TPath.Combine('..',result);
+
+  until Length(result)>100;
+end;
+
+procedure TSampleData.OpenTables;
+var Path : String;
+begin
+  Path:=FolderWithSampleData;
+
+  if Path='' then
+     raise Exception.Create('Error: Missing SQL sample database file FDDEMO.SDB required by this demo');
+
+  Sqlite_demoConnection.Params.Values['Database']:=Path;
+
+  CustomersTable.Open;
+  OrdersTable.Open;
+end;
 
 function TSampleData.OrdersOfCustomer(const ARecNo:Integer):TDataSet;
 

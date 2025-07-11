@@ -32,8 +32,10 @@ type
     BindNavigator1: TBindNavigator;
     DataSource1: TDataSource;
     BindSourceDB1: TBindSourceDB;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure CBEnabledChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -48,6 +50,7 @@ type
 
 var
   MasterDetail: TMasterDetail;
+  Open : Boolean;
 
 implementation
 
@@ -58,7 +61,11 @@ uses
 
 procedure TMasterDetail.FormCreate(Sender: TObject);
 begin
+  SampleData.CustomersTable.Open;
+
   TeeGrid1.DataSource:=SampleData.CustomersTable;
+
+  Open := False;
 
   // Initialize "Expander"
   CBEnabledChange(Self);
@@ -68,6 +75,20 @@ begin
 end;
 
 // Optional. Called when a new detail sub-grid has been created
+procedure TMasterDetail.Button1Click(Sender: TObject);
+begin
+  if Open then
+  Begin
+    TeeGrid1.Grid.Current.ShowHideAllDetail(0,False);
+    Open:= False;
+  End
+  else
+  Begin
+    TeeGrid1.Grid.Current.ShowHideAllDetail(0,True);
+    Open:= True;
+  End;
+end;
+
 procedure TMasterDetail.CBEnabledChange(Sender: TObject);
 begin
   if CBEnabled.IsChecked then
@@ -82,7 +103,8 @@ begin
     Expander.AlwaysExpand:=True;
 
     // Set to first Column
-    TeeGrid1.Columns[0].Render:=Expander;
+    if TeeGrid1.Columns.Count>0 then
+       TeeGrid1.Columns[0].Render:=Expander;
   end
   else
   begin
@@ -90,7 +112,8 @@ begin
     TeeGrid1.Rows.Children.Clear;
 
     // Set first column render to default (no expander)
-    TeeGrid1.Columns[0].Render:=nil;
+    if TeeGrid1.Columns.Count>0 then
+       TeeGrid1.Columns[0].Render:=nil;
   end;
 end;
 
@@ -106,6 +129,12 @@ begin
 
   // Add a Totals header:
   TTotalsHeader.CreateTotals(NewGroup.Footer,tmpTot);
+
+  // Cosmetics on the sub-grid
+  NewGroup.Rows.Back.Brush.Color:=TAlphaColors.Bisque;
+  NewGroup.Rows.Back.Brush.Visible:=True;
+
+  NewGroup.Cells.Format.Font.Color:=TAlphaColors.Darkblue;
 end;
 
 // Called when a new sub-grid has been created, to obtain the sub-grid Data

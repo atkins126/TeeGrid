@@ -90,7 +90,6 @@ object MasterDetail: TMasterDetail
         Link = 'Fax'
       end>
     DataSource = DataSource1
-    ReadOnly = False
     Align = Client
     Size.Width = 817.000000000000000000
     Size.Height = 554.000000000000000000

@@ -44,3 +44,7 @@ demos/FMXLinux/Ticker/Linux64/
 demos/FMXLinux/TStringGrid/Linux64/
 src/
 
+demos/FireMonkey/TeeGridFeatures/Win32/
+*.rsm
+demos/VirtualData/Custom Sorting/__recovery/
+__recovery

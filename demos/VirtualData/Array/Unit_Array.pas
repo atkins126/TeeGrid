@@ -113,7 +113,9 @@ begin
   for t:=0 to High(MyIntegers) do
       MyIntegers[t]:=Random(1000);
 
-  TeeGrid1.Data:=TVirtualData<TArray<Integer>>.Create(MyIntegers);
+  //  TeeGrid1.Data:=TVirtualData<TArray<Integer>>.Create(MyIntegers);  // <-- same as below
+
+  TeeGrid1.Data:=TVirtualArrayData<Integer>.Create(MyIntegers);
 
   TeeGrid1.Footer.Clear;
 end;
@@ -232,9 +234,12 @@ var tmp : TColumn;
 begin
   tmp:=TeeGrid1.Columns[AColumn];
 
-  tmp.Render:=TExpanderRender.Create(tmp.Changed);
+  if tmp<>nil then
+  begin
+    tmp.Render:=TExpanderRender.Create(tmp.Changed);
 
-  TExpanderRender(tmp.Render).OnGetExpanded:=ARows.IsChildrenVisible;
+    TExpanderRender(tmp.Render).OnGetExpanded:=ARows.IsChildrenVisible;
+  end;
 end;
 
 // Create a new Title grid-band

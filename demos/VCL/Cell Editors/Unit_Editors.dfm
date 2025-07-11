@@ -2,26 +2,23 @@ object FormCellEditors: TFormCellEditors
   Left = 0
   Top = 0
   Caption = 'TeeGrid - Cell Editors Example'
-  ClientHeight = 362
-  ClientWidth = 644
+  ClientHeight = 396
+  ClientWidth = 726
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object TeeGrid1: TTeeGrid
     Left = 0
     Top = 41
-    Width = 644
-    Height = 191
+    Width = 726
+    Height = 183
     Columns = <>
-    ReadOnly = False
     OnCellEditing = TeeGrid1CellEditing
     OnCellEdited = TeeGrid1CellEdited
     Align = alClient
@@ -39,7 +36,7 @@ object FormCellEditors: TFormCellEditors
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 644
+    Width = 726
     Height = 41
     Align = alTop
     TabOrder = 1
@@ -64,9 +61,9 @@ object FormCellEditors: TFormCellEditors
   end
   object Panel2: TPanel
     Left = 0
-    Top = 232
-    Width = 644
-    Height = 130
+    Top = 224
+    Width = 726
+    Height = 172
     Align = alBottom
     TabOrder = 2
     object Label2: TLabel
@@ -95,11 +92,11 @@ object FormCellEditors: TFormCellEditors
         ' to another cells'
     end
     object Label5: TLabel
-      Left = 71
+      Left = 36
       Top = 102
-      Width = 50
+      Width = 85
       Height = 13
-      Caption = 'Enter key:'
+      Caption = 'Editing Enter key:'
     end
     object Label6: TLabel
       Left = 127
@@ -109,6 +106,13 @@ object FormCellEditors: TFormCellEditors
       Caption = 
         'True = Cell editor using TEdit will select all text when showing' +
         ' it'
+    end
+    object Label7: TLabel
+      Left = 25
+      Top = 129
+      Width = 96
+      Height = 13
+      Caption = 'Selecting Enter key:'
     end
     object CBAutoEdit: TCheckBox
       Left = 24
@@ -131,7 +135,7 @@ object FormCellEditors: TFormCellEditors
     object CBEnterKey: TComboBox
       Left = 127
       Top = 99
-      Width = 194
+      Width = 242
       Height = 21
       Style = csDropDownList
       ItemIndex = 0
@@ -151,6 +155,48 @@ object FormCellEditors: TFormCellEditors
       Caption = 'Selected Text'
       TabOrder = 3
       OnClick = CBSelectedTextClick
+    end
+    object Button1: TButton
+      Left = 568
+      Top = 16
+      Width = 139
+      Height = 25
+      Caption = 'Custom Cell 1,1 format'
+      TabOrder = 4
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 568
+      Top = 47
+      Width = 139
+      Height = 25
+      Caption = 'Custom Cell 2,1 format'
+      TabOrder = 5
+      OnClick = Button2Click
+    end
+    object Button3: TButton
+      Left = 568
+      Top = 78
+      Width = 139
+      Height = 25
+      Caption = 'Custom Row 3 format'
+      TabOrder = 6
+      OnClick = Button3Click
+    end
+    object CBSelectingEnter: TComboBox
+      Left = 127
+      Top = 126
+      Width = 242
+      Height = 21
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 7
+      Text = 'Move to next cell at right and bottom'
+      OnChange = CBSelectingEnterChange
+      Items.Strings = (
+        'Move to next cell at right and bottom'
+        'Move to cell below'
+        'Move to next cell at right')
     end
   end
 end

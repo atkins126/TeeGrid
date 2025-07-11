@@ -50,6 +50,11 @@ type
     CBCustomEditors: TCheckBox;
     CBSelectedText: TCheckBox;
     Label6: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Label7: TLabel;
+    CBSelectingEnter: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure CBAutoEditClick(Sender: TObject);
     procedure CBAlwaysVisibleClick(Sender: TObject);
@@ -61,6 +66,10 @@ type
     procedure TeeGrid1CellEdited(const Sender: TObject; const AEditor: TControl;
       const AColumn: TColumn; const ARow: Integer;
       var ChangeData:Boolean; var NewData:String);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure CBSelectingEnterChange(Sender: TObject);
   private
     { Private declarations }
 
@@ -79,7 +88,52 @@ implementation
 uses
   Unit_Example_Data, Unit_Utils,
 
-  Tee.Grid, System.UITypes;
+  VCLTee.Painter,
+
+  Tee.Grid, System.UITypes, Tee.Grid.Rows, Tee.Format, Tee.Grid.Selection;
+
+procedure TFormCellEditors.Button1Click(Sender: TObject);
+var cell : TCell;
+    fontstyles :TFontStyles;
+begin
+  fontstyles := [TFontStyle.fsBold,TFontStyle.fsStrikeOut];
+
+  cell := TeeGrid1.CellFormat.AddCell(1, TeeGrid1.Columns[1].Index);
+
+  cell.Format.Font.Style := fontstyles;
+  cell.Format.Brush.Color := clYellow;
+  cell.Format.Font.Color := TColors.Red;
+  cell.Format.Brush.Show;
+
+  TeeGrid1.Invalidate;
+end;
+
+procedure TFormCellEditors.Button2Click(Sender: TObject);
+var cell : TCell;
+    fontstyles :TFontStyles;
+begin
+  fontstyles := [TFontStyle.fsBold,TFontStyle.fsItalic];
+
+  cell := TeeGrid1.CellFormat.Cell[2, 1];
+  cell.Format.Font.Style := fontstyles;
+  cell.Format.Brush.Color := clYellow;
+  cell.Format.Font.Color := TColors.Blue;
+  cell.Format.Brush.Show;
+
+  TeeGrid1.Invalidate;
+end;
+
+procedure TFormCellEditors.Button3Click(Sender: TObject);
+var row : TRow;
+begin
+   row:=TeeGrid1.Rows.Items[3];
+
+   row.Format.Brush.Show;
+   row.Format.Brush.Color:=clWebTan;
+   row.Format.Font.Color:=clRed;
+
+   TeeGrid1.Invalidate;
+end;
 
 procedure TFormCellEditors.CBAlwaysVisibleClick(Sender: TObject);
 begin
@@ -115,8 +169,17 @@ begin
   TeeGrid1.Editing.Text.Selected:=CBSelectedText.Checked;
 end;
 
+procedure TFormCellEditors.CBSelectingEnterChange(Sender: TObject);
+begin
+  // Several options when pressing the Enter key while NOT editing a cell (selecting cells only)
+  TeeGrid1.Selected.EnterKey:=TSelectingEnter(CBSelectingEnter.ItemIndex);
+end;
+
 procedure TFormCellEditors.FormCreate(Sender: TObject);
 begin
+// Example, switch from Windows GDI+ graphics to GDI:
+//  TeeGrid1.Painter:=TGdiPainter.Create(TeeGrid1.Canvas);
+
   // Use random sample data
   TeeGrid1.Data:=SampleData;
 
@@ -161,12 +224,15 @@ begin
   // Example, retrieve position from TrackBar
   if AColumn=TeeGrid1.Columns['Height'] then
   begin
-    tmp:=0.01*TTrackBar(AEditor).Position;
+    if AEditor is TTrackBar then
+    begin
+      tmp:=0.01*TTrackBar(AEditor).Position;
 
-    TeeGrid1.Data.SetValue(AColumn,ARow,FloatToStr(tmp));
+      TeeGrid1.Data.SetValue(AColumn,ARow,FloatToStr(tmp));
 
-    // Set to False, do not change grid cell data
-    ChangeData:=False;
+      // Set to False, do not change grid cell data
+      ChangeData:=False;
+    end;
   end
   else
   if AEditor is TComboBox then
@@ -233,7 +299,8 @@ begin
 
   // Example, use a trackbar as cell editor
   if AColumn=TeeGrid1.Columns['Height'] then
-     SetupTrackBar(TTrackBar(AEditor));
+     if AEditor is TTrackBar then
+        SetupTrackBar(TTrackBar(AEditor));
 end;
 
 { TComboBox }

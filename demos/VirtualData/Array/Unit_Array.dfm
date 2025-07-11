@@ -10,11 +10,9 @@ object FormArray: TFormArray
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object TeeGrid1: TTeeGrid
     Left = 0
@@ -22,13 +20,11 @@ object FormArray: TFormArray
     Width = 637
     Height = 419
     Columns = <>
-    ReadOnly = False
     Align = alClient
     UseDockManager = False
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
-    ExplicitWidth = 635
     _Headers = (
       1
       'TColumnHeaderBand'
@@ -43,7 +39,6 @@ object FormArray: TFormArray
     Height = 41
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 635
     object Button1: TButton
       Left = 16
       Top = 9
@@ -54,7 +49,7 @@ object FormArray: TFormArray
       OnClick = Button1Click
     end
     object BInteger: TButton
-      Left = 280
+      Left = 282
       Top = 8
       Width = 75
       Height = 25
@@ -107,7 +102,6 @@ object FormArray: TFormArray
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 635
     object Button5: TButton
       Left = 120
       Top = 6
